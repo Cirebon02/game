@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matematika | Zona EduGame</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #6a0dad, #1e90ff);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+    .options label {
+      display: block;
+      margin: 12px 0;
+      cursor: pointer;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.3);
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    .bubble-large {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      animation: float 20s ease-in-out infinite;
+      z-index: 0;
+    }
+    .bubble1 {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: -150px;
+    }
+    .bubble2 {
+      width: 400px;
+      height: 400px;
+      bottom: 0;
+      right: -200px;
+      animation-delay: 5s;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(20px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Gelembung besar samar -->
+  <div class="bubble-large bubble1"></div>
+  <div class="bubble-large bubble2"></div>
+
+  <div class="quiz-container">
+    <h1>Kuis Pengetahuan Umum</h1>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div style="text-align:center">
+  <!-- Audio klik -->
+  <audio id="click-sound" src="/game/zona-edugame/assest/click.mp3"></audio>
+
+  <button id="btn-prev">⟵ Sebelumnya</button>
+  <button id="btn-menu">Kembali ke Menu</button>
+  <button id="btn-next">Lanjutkan ⟶</button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('click-sound');
+
+    function playClickSound(callback) {
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        audio.onended = () => callback();
+        // Backup jika onended tidak terpanggil
+        setTimeout(callback, 800);
+      }).catch((err) => {
+        console.warn("Gagal memainkan suara:", err);
+        callback();
+      });
+    }
+
+    document.getElementById('btn-prev').addEventListener('click', () => {
+      playClickSound(() => prevQuestion());
+    });
+
+    document.getElementById('btn-next').addEventListener('click', () => {
+      playClickSound(() => nextQuestion());
+    });
+
+    document.getElementById('btn-menu').addEventListener('click', () => {
+      playClickSound(() => window.location.href = '/game/zona-edugame/menu.html');
+    });
+  });
+</script>
+  </div>
+
+  <script>
+  const allPool = [
+    { q: "3 + 4 × 2", options: ['11', '14', '8'], answer: 0 },
+    { q: "9 - 2 × 3", options: ['3', '12', '5'], answer: 0 },
+    { q: "6 × 2 + 1", options: ['13', '15', '12'], answer: 0 },
+    { q: "10 - 6 + 2", options: ['4', '8', '6'], answer: 2 },
+    { q: "8 + 2 × 3", options: ['22', '30', '14'], answer: 2 },
+    { q: "5 × 2 - 1", options: ['11', '9', '7'], answer: 1 },
+    { q: "4 + 3 × 2", options: ['10', '14', '16'], answer: 0 },
+    { q: "3 + 7 - 5", options: ['5', '4', '6'], answer: 0 },
+    { q: "9 + 1 × 4", options: ['13', '14', '15'], answer: 0 },
+    { q: "8 - 3 + 6", options: ['10', '11', '9'], answer: 1 },
+    { q: "5 + 2 × 3", options: ['11', '16', '10'], answer: 0 },
+    { q: "4 × 2 - 3", options: ['5', '3', '4'], answer: 0 },
+    { q: "2 + 3 × 3", options: ['9', '11', '10'], answer: 1 },
+    { q: "7 - 4 × 2", options: ['6', '-1', '3'], answer: 1 },
+    { q: "6 + 5 - 2", options: ['8', '7', '9'], answer: 2 },
+    { q: "3 × 5 - 4", options: ['11', '15', '12'], answer: 0 },
+    { q: "10 - 2 × 4", options: ['2', '4', '8'], answer: 0 },
+    { q: "1 + 6 × 2", options: ['12', '13', '10'], answer: 1 },
+    { q: "2 + 4 × 3", options: ['14', '13', '12'], answer: 2 },
+    { q: "5 × 2 + 3", options: ['12', '11', '13'], answer: 2 },
+    { q: "7 + 6 - 3", options: ['10', '11', '12'], answer: 0 },
+    { q: "4 × 3 - 2", options: ['10', '8', '6'], answer: 0 },
+    { q: "3 × 3 + 2", options: ['11', '9', '10'], answer: 2 },
+    { q: "2 + 2 × 4", options: ['10', '8', '9'], answer: 2 },
+    { q: "8 × 2 - 1", options: ['15', '17', '16'], answer: 1 },
+    { q: "6 - 1 + 2", options: ['8', '7', '6'], answer: 0 },
+    { q: "3 × 4 - 5", options: ['8', '7', '6'], answer: 0 },
+    { q: "7 + 2 × 3", options: ['13', '12', '11'], answer: 0 },
+    { q: "9 - 5 + 4", options: ['8', '7', '9'], answer: 2 },
+    { q: "2 × 5 + 1", options: ['11', '10', '9'], answer: 0 }
+  ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(allPool);
+    const allQuestions = allPool.slice(0, 10);
+
+    let current = 0;
+    let userAnswers = Array(allQuestions.length).fill(null);
+
+    function renderQuestion() {
+      const q = allQuestions[current];
+      document.getElementById('question').innerText = `Soal ${current + 1}: ${q.q}`;
+      const optionsDiv = document.getElementById('options');
+      optionsDiv.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        optionsDiv.innerHTML += `
+          <label><input type="radio" name="option" value="${i}" ${userAnswers[current] === i ? 'checked' : ''}> ${String.fromCharCode(65 + i)}. ${opt}</label>`;
+      });
+    }
+
+    function nextQuestion() {
+  const selected = document.querySelector('input[name="option"]:checked');
+  if (!selected) {
+    alert('Silakan pilih jawaban terlebih dahulu!');
+    return;
+  }
+  userAnswers[current] = parseInt(selected.value);
+
+  if (current < allQuestions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    let score = 0;
+    for (let i = 0; i < allQuestions.length; i++) {
+      if (userAnswers[i] === allQuestions[i].answer) {
+        score += 10;
+      }
+    }
+
+    // UBAH
+    const name = prompt('Masukkan nama Anda untuk menyimpan Skor:');
+    const finalName = name ? name : 'Pengguna';
+    const encodedName = encodeURIComponent(finalName);
+    window.location.href = `/game/zona-edugame/matematika-game/skor-math.html?nilai=${score}&nama=${encodedName}`;
+  }
+}
+
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        renderQuestion();
+      }
+    }
+
+    // Tambahan agar tombol back/forward dan panah kiri/kanan tidak berfungsi
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+      }
+    });
+
+    window.onload = renderQuestion;
+  </script>
+
+<audio id="bg-music" src="/game/zona-edugame/assest/music.mp3" loop></audio>
+<script src="/game/zona-edugame/assest/js/audio-controller.js"></script>
+
+</body>
+</html>

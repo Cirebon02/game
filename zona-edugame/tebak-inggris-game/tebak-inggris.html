@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tebak Kosakata Inggris | Zona EduGame</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #6a0dad, #1e90ff);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .quiz-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      backdrop-filter: blur(10px);
+    }
+    .question-img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      background: white;
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    .options label {
+      display: block;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.3);
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    .bubble-large {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      animation: float 20s ease-in-out infinite;
+      z-index: 0;
+    }
+    .bubble1 {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: -150px;
+    }
+    .bubble2 {
+      width:  150px;
+      height: 150px;
+      bottom: 0;
+      right:  0;
+      animation-delay: 3s;
+    }
+  </style>
+</head>
+<body>
+  <!-- Gelembung besar samar -->
+  <div class="bubble-large bubble1"></div>
+  <div class="bubble-large bubble2"></div>
+
+ <div class="quiz-container">
+    <h1>Tebak Kosakata Inggris</h1>
+    <div id="questionNumber" style="font-size: 1.1em; margin-bottom: 10px;"></div>
+    <img id="questionImg" class="question-img" src="" alt="Gambar">
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div style="text-align:center">
+  <!-- Audio klik -->
+  <audio id="click-sound" src="/game/zona-edugame/assest/click.mp3"></audio>
+
+  <button id="btn-prev">⟵ Sebelumnya</button>
+  <button id="btn-menu">Kembali ke Menu</button>
+  <button id="btn-next">Lanjutkan ⟶</button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('click-sound');
+
+    function playClickSound(callback) {
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        audio.onended = () => callback();
+        // Backup jika onended tidak terpanggil
+        setTimeout(callback, 800);
+      }).catch((err) => {
+        console.warn("Gagal memainkan suara:", err);
+        callback();
+      });
+    }
+
+    document.getElementById('btn-prev').addEventListener('click', () => {
+      playClickSound(() => prevQuestion());
+    });
+
+    document.getElementById('btn-next').addEventListener('click', () => {
+      playClickSound(() => nextQuestion());
+    });
+
+    document.getElementById('btn-menu').addEventListener('click', () => {
+      playClickSound(() => window.location.href = '/game/zona-edugame/menu.html');
+    });
+  });
+</script>
+  </div>
+
+  <script>
+    const allQuestions = [
+      { img: '/game/zona-edugame/img/door.png', word: 'Door', options: ['Window', 'Door', 'Roof'], answer: 1 },
+      { img: '/game/zona-edugame/img/apple.png', word: 'Apple', options: ['Banana', 'Carrot', 'Apple'], answer: 2 },
+      { img: '/game/zona-edugame/img/doctor.png', word: 'Doctor', options: ['Teacher', 'Doctor', 'Farmer'], answer: 1 },
+      { img: '/game/zona-edugame/img/cat.png', word: 'Cat', options: ['Dog', 'Cat', 'Mouse'], answer: 1 },
+      { img: '/game/zona-edugame/img/banana.png', word: 'Banana', options: ['Banana', 'Orange', 'Pear'], answer: 0 },
+      { img: '/game/zona-edugame/img/fireman.png', word: 'Fireman', options: ['Policeman', 'Fireman', 'Chef'], answer: 1 },
+      { img: '/game/zona-edugame/img/table.png', word: 'Table', options: ['Chair', 'Bed', 'Table'], answer: 2 },
+      { img: '/game/zona-edugame/img/bird.png', word: 'Bird', options: ['Bird', 'Fish', 'Frog'], answer: 0 },
+      { img: '/game/zona-edugame/img/teacher.png', word: 'Teacher', options: ['Student', 'Teacher', 'Doctor'], answer: 1 },
+      { img: '/game/zona-edugame/img/grape.png', word: 'Grape', options: ['Apple', 'Grape', 'Mango'], answer: 1 },
+      { img: '/game/zona-edugame/img/chair.png', word: 'Chair', options: ['Sofa', 'Chair', 'Table'], answer: 1 },
+      { img: '/game/zona-edugame/img/fish.png', word: 'Fish', options: ['Shark', 'Whale', 'Fish'], answer: 2 },
+      { img: '/game/zona-edugame/img/chef.png', word: 'Chef', options: ['Chef', 'Pilot', 'Soldier'], answer: 0 },
+      { img: '/game/zona-edugame/img/mango.png', word: 'Mango', options: ['Lemon', 'Mango', 'Peach'], answer: 1 },
+      { img: '/game/zona-edugame/img/lion.png', word: 'Lion', options: ['Tiger', 'Lion', 'Bear'], answer: 1 },
+      { img: '/game/zona-edugame/img/bus.png', word: 'Bus', options: ['Car', 'Train', 'Bus'], answer: 2 },
+      { img: '/game/zona-edugame/img/soldier.png', word: 'Soldier', options: ['Doctor', 'Farmer', 'Soldier'], answer: 2 },
+      { img: '/game/zona-edugame/img/elephant.png', word: 'Elephant', options: ['Horse', 'Elephant', 'Zebra'], answer: 1 },
+      { img: '/game/zona-edugame/img/nurse.png', word: 'Nurse', options: ['Teacher', 'Nurse', 'Driver'], answer: 1 },
+      { img: '/game/zona-edugame/img/strawberry.png', word: 'Strawberry', options: ['Strawberry', 'Watermelon', 'Apple'], answer: 0 },
+      { img: '/game/zona-edugame/img/monkey.png', word: 'Monkey', options: ['Monkey', 'Dog', 'Cow'], answer: 0 },
+      { img: '/game/zona-edugame/img/cow.png', word: 'Cow', options: ['Cow', 'Goat', 'Sheep'], answer: 0 },
+      { img: '/game/zona-edugame/img/carrot.png', word: 'Carrot', options: ['Potato', 'Carrot', 'Cabbage'], answer: 1 },
+      { img: '/game/zona-edugame/img/dog.png', word: 'Dog', options: ['Rabbit', 'Dog', 'Cat'], answer: 1 },
+      { img: '/game/zona-edugame/img/farmer.png', word: 'Farmer', options: ['Farmer', 'Doctor', 'Policeman'], answer: 0 },
+      { img: '/game/zona-edugame/img/orange.png', word: 'Orange', options: ['Apple', 'Orange', 'Lemon'], answer: 1 },
+      { img: '/game/zona-edugame/img/bear.png', word: 'Bear', options: ['Bear', 'Fox', 'Tiger'], answer: 0 },
+      { img: '/game/zona-edugame/img/driver.png', word: 'Driver', options: ['Driver', 'Pilot', 'Chef'], answer: 0 },
+      { img: '/game/zona-edugame/img/pear.png', word: 'Pear', options: ['Pear', 'Banana', 'Grape'], answer: 0 },
+      { img: '/game/zona-edugame/img/goat.png', word: 'Goat', options: ['Goat', 'Sheep', 'Horse'], answer: 0 },
+    ];
+
+    const shuffled = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 10);
+    let current = 0;
+    let userAnswers = Array(10).fill(null);
+
+    function renderQuestion() {
+      const q = shuffled[current];
+      document.getElementById('questionNumber').innerText = `Soal ${current + 1} dari 10`;
+      document.getElementById('questionImg').src = q.img;
+      document.getElementById('question').innerText = `Apa bahasa Inggris dari gambar di atas?`;
+      document.getElementById('options').innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const letter = String.fromCharCode(65 + i); // 'A', 'B', 'C'
+        document.getElementById('options').innerHTML += `
+          <label><input type="radio" name="option" value="${i}" ${userAnswers[current] === i ? 'checked' : ''}> ${letter}. ${opt}</label>`;
+      });
+    }
+
+    function nextQuestion() {
+  const selected = document.querySelector('input[name="option"]:checked');
+  if (!selected) {
+    alert('Silakan pilih jawaban terlebih dahulu!');
+    return;
+  }
+  userAnswers[current] = parseInt(selected.value);
+  if (current < 9) {
+    current++;
+    renderQuestion();
+  } else {
+    let score = 0;
+    for (let i = 0; i < 10; i++) {
+      if (userAnswers[i] === shuffled[i].answer) score++;
+    }
+    const nilai = score * 10;
+    const name = prompt('Masukkan nama Anda untuk menyimpan Skor:');
+    const finalName = name ? name : 'Pengguna';
+    const encodedName = encodeURIComponent(finalName);
+    window.location.href = `/game/zona-edugame/tebak-inggris-game/skor-inggris.html?nilai=${nilai}&nama=${encodedName}`;
+  }
+}
+
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        renderQuestion();
+      }
+    }
+
+    window.onload = renderQuestion;
+  </script>
+
+<audio id="bg-music" src="/game/zona-edugame/assest/music.mp3" loop></audio>
+<script src="/game/zona-edugame/assest/js/audio-controller.js"></script>
+
+</body>
+</html>
