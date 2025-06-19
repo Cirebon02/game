@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VocabLearn SPA</title>
+  <link rel="stylesheet" href="assest/css/global-style.css" />
+</head>
+<body>
+  <div id="navbar-container"></div>
+  <audio id="bg-music" src="assest/music.mp3" autoplay loop></audio>
+  <main id="main-content"></main>
+
+  <script src="assest/js/navbar.js"></script>
+  <script>
+    const pages = {
+      index: `<!-- Navbar -->
+   <div id="navbar-container"></div>
+
+<script src="/zona-edugame/navbar.js"></script>
+
+  <!-- Animasi Gelembung -->
+  <script>
+    for (let i = 0; i < 30; i++) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.style.left = `${Math.random() * 100}%`;
+      bubble.style.animationDuration = `${5 + Math.random() * 10}s`;
+      bubble.style.width = bubble.style.height = `${10 + Math.random() * 30}px`;
+      document.body.appendChild(bubble);
+    }
+  </script>
+
+  <div class="container">
+    <section class="reveal">
+      <h1>Zona EduGame</h1>
+      <br>
+      <br>
+      
+    <div style="text-align: center;">
+  <img src="img/logo.png" alt="Deskripsi Gambar" width="250" height="250">
+</div>
+  
+    </section>
+    <section class="reveal">
+      <h2>Website ini berisi kumpulan game edukasi sederhana yang menyenangkan dan melatih otak, seperti kuis, tebak gambar kosakata bahasa Inggris , serta game Vocabulary seru</h2>
+    </section>
+    <section class="reveal">
+      <h2>Dibuat oleh: [Group 4 ELTM Vocabulary]</h2> <br>
+      <h3 style="text-align: center;">Bustanul Arifin, Isa Parti Kuncoro, Leli, Silvi, Shofiatul Fakhriah</h3>
+      <h3 style="text-align: center;">Jenjang Sekolah SMP Kelas 7</h3>
+
+    </section>
+    <section class="reveal">
+      <button class="btn" onclick="location.href='/game/zona-edugame/menu.html'">Mainkan Sekarang</button>
+    </section>
+    <section class="reveal">
+      <footer>&copy; 2025 Zona EduGame. All rights reserved.</footer>
+    </section>
+  </div>
+
+  <script>
+    // Animasi scroll muncul
+    const sections = document.querySelectorAll('section');
+    window.addEventListener('scroll', () => {
+      const trigger = window.innerHeight / 1.2;
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < trigger) {
+          sec.classList.add('show');
+        }
+      });
+    });
+  </script>
+
+<audio id="bg-music" src="/zona-edugame/assest/music.mp3" loop></audio>
+<script src="/zona-edugame/assest/js/audio-controller.js"></script>
+
+<div id="navbar-container"></div>
+<script src="assest/js/navbar.js"></script>`,
+      menu: `<!-- Navbar -->
+   <div id="navbar-container"></div>
+
+<script src="/zona-edugame/navbar.js"></script>
+
+  <!-- Gelembung besar samar -->
+  <div class="bubble-large bubble1"></div>
+  <div class="bubble-large bubble2"></div>
+
+  <h1>Pilih Game Edukasi</h1>
+  <div class="game-menu">
+    <div class="game-card" onclick="location.href='/game/zona-edugame/quiz-game/quiz.html'">
+      <h2>Kuis Pengetahuan Umum</h2>
+      <p>Uji pengetahuanmu dengan pertanyaan seru dan menantang!</p>
+    </div>
+    <div class="game-card" onclick="location.href='/game/zona-edugame/tebak-inggris-game/tebak-inggris.html'">
+      <h2>Tebak Kosakata Inggris</h2>
+      <p>Kenali dan tebak arti kata-kata dalam Bahasa Inggris lewat gambar.</p>
+    </div>
+    <div class="game-card" onclick="location.href='/game/zona-edugame/tebak-arab-game/tebak-arab.html'">
+      <h2>Tebak Kosakata Arab</h2>
+      <p>Tebak makna dan gambar dari kata-kata dalam Bahasa Arab.</p>
+    </div>
+    <div class="game-card" onclick="location.href='/game/zona-edugame/matematika-game/math.html'">
+      <h2>Game Matematika</h2>
+      <p>Asah logika dan kemampuan hitungmu dengan soal matematika!</p>
+    </div>
+    <div class="game-card" onclick="location.href='/game/zona-edugame/tebak-inggris-game/setting.html'">
+      <h2>Pengaturan</h2>
+      <p>Mengatur Besar Kecil Volume</p>
+    </div>
+  </div>
+
+<audio id="bg-music" src="/zona-edugame/assest/music.mp3" loop></audio>
+<script src="/zona-edugame/assest/js/audio-controller.js"></script>
+
+<div id="navbar-container"></div>
+<script src="assest/js/navbar.js"></script>`,
+      setting: `<div id="navbar-container"></div>
+  <script src="/zona-edugame/navbar.js"></script>
+
+  <div class="bubble-large bubble1"></div>
+  <div class="bubble-large bubble2"></div>
+
+  <h1>Pengaturan Suara</h1>
+  <div class="control-panel">
+    <div class="volume-control">
+      <label for="volume">Volume: </label>
+      <input type="range" id="volume" min="0" max="1" step="0.01">
+    </div>
+    <div class="button-group">
+      <button onclick="repeatAudio()">🔁 Ulangi</button>
+      <button onclick="playAudio()">▶️ Putar</button>
+      <button onclick="stopAudio()">⏹️ Hentikan</button>
+    </div>
+  </div>
+
+  <script>
+    let bgMusic;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Ambil audio dari window/global jika sudah diatur di navbar.js
+      bgMusic = window.bgMusic || new Audio('/zona-edugame/assest/music.mp3');
+      bgMusic.loop = true;
+      bgMusic.volume = localStorage.getItem('bgVolume') || 0.5;
+      window.bgMusic = bgMusic;
+
+      // Putar jika belum
+      if (bgMusic.paused) bgMusic.play();
+
+      // Set volume slider sesuai state
+      document.getElementById('volume').value = bgMusic.volume;
+
+      // Update volume on change
+      document.getElementById('volume').addEventListener('input', (e) => {
+        bgMusic.volume = e.target.value;
+        localStorage.setItem('bgVolume', bgMusic.volume);
+      });
+    });
+
+    function playAudio() {
+      bgMusic.play();
+    }
+
+    function stopAudio() {
+      bgMusic.pause();
+    }
+
+    function repeatAudio() {
+      bgMusic.currentTime = 0;
+      bgMusic.play();
+    }
+  </script>
+
+<audio id="bg-music" src="/zona-edugame/assest/music.mp3" loop></audio>
+<script src="/zona-edugame/assest/js/audio-controller.js"></script>
+
+<div id="navbar-container"></div>
+<script src="assest/js/navbar.js"></script>`
+    };
+
+    function loadPage(name) {
+      const container = document.getElementById("main-content");
+      container.innerHTML = pages[name] || "<p>Halaman tidak ditemukan.</p>";
+    }
+
+    // Routing awal
+    const hash = window.location.hash.replace('#', '') || 'index';
+    loadPage(hash);
+
+    // Tambahkan routing ke tautan navbar
+    document.addEventListener("click", function(e) {
+      if (e.target.tagName === "A" && e.target.hash) {
+        e.preventDefault();
+        const page = e.target.hash.replace("#", "");
+        loadPage(page);
+        history.pushState(null, "", "#" + page);
+      }
+    });
+  </script>
+</body>
+</html>
