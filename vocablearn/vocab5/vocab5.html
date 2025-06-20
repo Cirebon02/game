@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vocabulary 01 | VocabLearn </title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #6a0dad, #7b42f6, #1e90ff);
+      background-size: 400% 400%;
+      animation: gradientMove 20s ease infinite;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .menu button {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .menu button:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .bubble-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      margin: 20px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      display: none;
+    }
+
+    .bubble-container h2 {
+      color: #fff;
+    }
+
+    .vocab-item {
+      margin: 10px 0;
+    }
+
+    .vocab-item strong {
+      display: inline-block;
+      width: 130px;
+    }
+
+    @media (max-width: 480px) {
+      .menu {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .menu button {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Describing People - VocabLearn</h1>
+
+  <div class="menu">
+    <button onclick="showContent('height')">Tinggi Badan</button>
+    <button onclick="showContent('build')">Bentuk Badan</button>
+    <button onclick="showContent('hair')">Rambut</button>
+    <button onclick="showContent('hairColor')">Warna Rambut</button>
+    <button onclick="showContent('eyes')">Mata</button>
+    <button onclick="showContent('skin')">Kulit</button>
+    <button onclick="showContent('features')">Ciri Lain</button>
+<button onclick="window.location.href='/game/vocablearn/menu.html'">Kembali Ke Menu 🏠</button>
+  </div>
+
+  <div id="content" class="bubble-container"></div>
+
+  <script>
+    const vocabData = {
+      height: [
+        {en: "tall /tɔːl/", id: "tinggi"},
+        {en: "short /ʃɔːrt/", id: "pendek"},
+        {en: "medium height /ˈmiːdiəm haɪt/", id: "tinggi sedang"},
+      ],
+      build: [
+        {en: "slim /slɪm/", id: "langsing"},
+        {en: "thin /θɪn/", id: "kurus"},
+        {en: "muscular /ˈmʌskjələr/", id: "berotot"},
+        {en: "average build /ˈævərɪdʒ bɪld/", id: "bentuk badan rata-rata"},
+        {en: "overweight /ˌoʊvərˈweɪt/", id: "kelebihan berat badan"},
+      ],
+      hair: [
+        {en: "long /lɔːŋ/", id: "panjang"},
+        {en: "short /ʃɔːrt/", id: "pendek"},
+        {en: "curly /ˈkɜːrli/", id: "keriting"},
+        {en: "straight /streɪt/", id: "lurus"},
+        {en: "wavy /ˈweɪvi/", id: "bergelombang"},
+      ],
+      hairColor: [
+        {en: "black /blæk/", id: "hitam"},
+        {en: "brown /braʊn/", id: "coklat"},
+        {en: "blonde /blɑːnd/", id: "pirang"},
+        {en: "red /rɛd/", id: "merah"},
+        {en: "gray /ɡreɪ/", id: "abu-abu"},
+      ],
+      eyes: [
+        {en: "big /bɪɡ/", id: "besar"},
+        {en: "small /smɔːl/", id: "kecil"},
+        {en: "blue /bluː/", id: "biru"},
+        {en: "green /ɡriːn/", id: "hijau"},
+        {en: "brown /braʊn/", id: "coklat"},
+        {en: "black /blæk/", id: "hitam"},
+      ],
+      skin: [
+        {en: "fair /fɛər/", id: "cerah / putih"},
+        {en: "dark /dɑːrk/", id: "gelap"},
+        {en: "tan /tæn/", id: "kecoklatan"},
+        {en: "pale /peɪl/", id: "pucat"},
+      ],
+      features: [
+        {en: "wear glasses", id: "memakai kacamata"},
+        {en: "beard /bɪərd/", id: "jenggot"},
+        {en: "mustache /ˈmʌstæʃ/", id: "kumis"},
+        {en: "freckles /ˈfrɛklz/", id: "bintik-bintik (di wajah)"},
+        {en: "dimples /ˈdɪmpəlz/", id: "lesung pipi"},
+      ]
+    };
+
+    function showContent(topic) {
+      const container = document.getElementById('content');
+      const items = vocabData[topic];
+      container.innerHTML = `<h2>${capitalize(topic.replace(/([A-Z])/g, ' $1'))}</h2>`;
+      items.forEach(item => {
+        container.innerHTML += `<div class="vocab-item"><strong>${item.en}</strong> : ${item.id}</div>`;
+      });
+      container.style.display = "block";
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VocabLearn</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6a0dad, #7b42f6, #1e90ff);
+      background-size: 400% 400%;
+      animation: gradientMove 20s ease infinite;
+      color: white;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: rise 10s infinite ease-in;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      margin: 100px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1s ease;
+    }
+
+    section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+    }
+
+    .btn {
+      display: block;
+      margin: 30px auto;
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #ffffff;
+      color: #6a0dad;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #e0c3fc;
+    }
+
+    footer {
+      text-align: center;
+      margin: 100px 0;
+    }
+
+    img {
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div id="navbar-container"></div>
+  <script src="/game/vocablearn/assest/js/navbar.js"></script>
+
+  <!-- Animasi Gelembung -->
+  <script>
+    for (let i = 0; i < 30; i++) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.style.left = `${Math.random() * 100}%`;
+      bubble.style.animationDuration = `${5 + Math.random() * 10}s`;
+      bubble.style.width = bubble.style.height = `${10 + Math.random() * 30}px`;
+      document.body.appendChild(bubble);
+    }
+  </script>
+
+  <div class="container">
+    <section class="reveal">
+      <h1>VocabLearn</h1>
+      <br><br>
+      <div style="text-align: center;">
+        <img src="/game/vocablearn/img/uin.png" alt="Logo VocabLearn" width="250" height="250">
+      </div>
+    </section>
+
+    <section class="reveal">
+      <h2>Website ini berisi kumpulan pembelajaran sederhana tentang vocabulary yang menyenangkan dan melatih otak, seperti kosakata bahasa inggris, belajar bahasa inggris dengan praktek gambar, serta game Vocabulary seru!</h2>
+    </section>
+
+    <section class="reveal">
+      <h2>Dibuat oleh: [Group 4 ELTM Vocabulary]</h2> <br>
+      <h3>Bustanul Arifin, Isa Parti Kuncoro, Leli, Silvi, Shofiatul Fakhriah</h3>
+      <h3>Jenjang Sekolah SMP Kelas 7</h3>
+    </section>
+
+    <section class="reveal">
+      <button class="btn" onclick="location.href='/game/vocablearn/menu.html'">Mainkan Sekarang</button>
+    </section>
+
+    <section class="reveal">
+      <footer>&copy; 2025 VocabLearn. All rights reserved. ./Create @dannnzxr_</footer>
+    </section>
+  </div>
+
+  <!-- Scroll animasi muncul -->
+  <script>
+    const sections = document.querySelectorAll('section');
+    window.addEventListener('scroll', () => {
+      const trigger = window.innerHeight / 1.2;
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < trigger) {
+          sec.classList.add('show');
+        }
+      });
+    });
+  </script>
+
+  <audio id="bg-music" src="/game/vocablearn/assest/music.mp3" loop></audio>
+  <script src="/game/vocablearn/assest/js/audio-controller.js"></script>
+</body>
+</html>
