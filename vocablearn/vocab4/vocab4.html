@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kuis Vocabulary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #6a0dad, #7b42f6, #1e90ff);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      overflow: hidden;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+    #question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      font-size: 1em;
+      margin-bottom: 20px;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    button:hover {
+      background: rgba(255,255,255,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>VocabLearn</h1>
+    <div id="question-box">
+      <p id="question">Soal akan muncul di sini</p>
+      <input type="text" id="answer-input" placeholder="Ketik jawaban di sini..." />
+
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">⬅️ Sebelumnya </button>
+        <button onclick="goToMenu()">Menu 🏠 </button>
+        <button onclick="nextQuestion()"> Lanjutkan ➡️</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const allQuestions = [
+      { question: "Bagaimana menyebut seseorang yang tinggi badannya di atas rata-rata?", answer: "tall" },
+      { question: "Apa sebutan untuk bentuk badan yang langsing?", answer: "slim" },
+      { question: "Apa istilah bahasa Inggris untuk rambut lurus?", answer: "straight hair" },
+      { question: "Warna rambut coklat disebut apa?", answer: "brown hair" },
+      { question: "Bagaimana menyebut mata berwarna biru?", answer: "blue eyes" },
+      { question: "Apa sebutan untuk kulit sawo matang?", answer: "tan skin" },
+      { question: "Istilah untuk orang yang berotot adalah?", answer: "muscular" },
+      { question: "Bagaimana menyebut seseorang yang memakai kacamata?", answer: "wears glasses" },
+      { question: "Istilah bahasa Inggris untuk kulit pucat?", answer: "pale skin" },
+      { question: "Apa sebutan untuk seseorang yang kelebihan berat badan?", answer: "overweight" },
+      { question: "Apa sebutan untuk rambut bergelombang?", answer: "wavy hair" },
+      { question: "Ciri wajah berupa lesung pipi disebut?", answer: "dimples" },
+      { question: "Apa sebutan untuk mata berwarna cokelat?", answer: "brown eyes" },
+      { question: "Istilah untuk rambut pendek lurus?", answer: "short straight hair" },
+      { question: "Apa istilah untuk rambut pirang?", answer: "blonde hair" }
+    ];
+
+    let quiz = [];
+    let current = 0;
+    let userAnswers = [];
+
+    window.onload = () => {
+      quiz = shuffle([...allQuestions]).slice(0, 10);
+      loadQuestion();
+    };
+
+    function shuffle(arr) {
+      return arr.sort(() => Math.random() - 0.5);
+    }
+
+    function loadQuestion() {
+      const q = quiz[current];
+      document.getElementById("question").innerText = `Soal ${current + 1}: ${q.question}`;
+      document.getElementById("answer-input").value = userAnswers[current] || "";
+    }
+
+    function nextQuestion() {
+      const input = document.getElementById("answer-input").value.trim().toLowerCase();
+      if (!input) {
+        alert("Silakan isi jawaban sebelum lanjut.");
+        return;
+      }
+      userAnswers[current] = input;
+      if (current < quiz.length - 1) {
+        current++;
+        loadQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        loadQuestion();
+      }
+    }
+
+    function finishQuiz() {
+      let score = 0;
+      quiz.forEach((q, i) => {
+        if (userAnswers[i] === q.answer.toLowerCase()) {
+          score++;
+        }
+      });
+      localStorage.setItem("score", score);
+      window.location.href = "/game/vocablearn/skor2.html";
+    }
+
+    function goToMenu() {
+      window.location.href = "/game/vocablearn/menu.html";
+    }
+  </script>
+</body>
+</html>
