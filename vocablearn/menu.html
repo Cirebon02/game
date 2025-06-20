@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Game | VocabLearn</title>
+  <style>
+    html, body {
+      height: auto;
+      min-height: 150vh;
+    }
+    body {
+      background: linear-gradient(to bottom right, #6a0dad, #1e90ff);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    h1 {
+      margin-top: 50px;
+      font-size: 3em;
+      text-align: center;
+    }
+    .game-menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin: 50px;
+      width: 90%;
+      max-width: 1000px;
+      z-index: 1;
+    }
+    .game-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      transition: 0.3s;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .game-card:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+    .game-card h2 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+    }
+    .game-card p {
+      font-size: 1em;
+    }
+    .bubble-large {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      animation: float 20s ease-in-out infinite;
+      z-index: 0;
+    }
+    .bubble1 {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: -150px;
+    }
+    .bubble2 {
+      width: 400px;
+      height: 400px;
+      bottom: 0;
+      right: -200px;
+      animation-delay: 5s;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(20px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+   <div id="navbar-container"></div>
+
+<script src="/game/vocablearn/assest/js/navbar.js"></script>
+
+  <!-- Gelembung besar samar -->
+  <div class="bubble-large bubble1"></div>
+  <div class="bubble-large bubble2"></div>
+
+  <h1>Select Learning</h1>
+  <div class="game-menu">
+  <!-- Audio element -->
+  <audio id="click-sound" src="/game/vocablearn/assest/click.mp3"></audio>
+
+  <!-- Game cards tanpa langsung redirect -->
+  <div class="game-card" data-url="/game/vocablearn/vocab1/vocab1.html">
+    <h2>Vocabulary Definition
+</h2>
+    <p>Pelajari arti kata-kata dalam bahasa Inggris dengan penjelasan sederhana dan mudah dimengerti.</p>
+  </div>
+  <div class="game-card" data-url="/game/vocablearn/vocab5/vocab5.html">
+    <h2>Vocabulary With Meaning</h2>
+    <p>Pelajari vocabulary / kosakata bahasa inggris beserta dengan artinya.</p>
+  </div>
+  <div class="game-card" data-url="/game/vocablearn/vocab2/vocab2.html">
+    <h2>Vocabulary Pronounce With Picture</h2>
+    <p>Belajar kosakata bahasa Inggris melalui gambar, dan belajar cara pengucapannya dengan audio</p>
+  </div>
+  <div class="game-card" data-url="/game/vocablearn/vocab3/vocab3.html">
+    <h2>Multiple choice vocabulary</h2>
+    <p> Uji kemampuanmu dalam menebak kosakata dalam game dengan gambar berbentuk soal pilihan ganda.
+
+</p>
+  </div>
+<div class="game-card" data-url="/game/vocablearn/vocab4/vocab4.html">
+    <h2>Multiple choice vocabulary</h2>
+    <p> Uji kemampuanmu dalam menebak kosakata dalam game dengan gambar berbentuk soal pilihan ganda.
+
+</p>
+  </div>
+</div>
+
+<!-- JavaScript to handle clicks and play sound -->
+<script>
+  const cards = document.querySelectorAll('.game-card');
+  const audio = document.getElementById('click-sound');
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const targetUrl = card.getAttribute('data-url');
+      audio.play();
+
+      // Redirect setelah suara selesai
+      audio.onended = () => {
+        window.location.href = targetUrl;
+      };
+
+      // Atau bisa pakai delay jika suara terlalu panjang
+      // setTimeout(() => {
+      //   window.location.href = targetUrl;
+      // }, 500); // Delay 0.5 detik
+    });
+  });
+</script>
+
+  </div>
+
+<audio id="bg-music" src="/game/vocablearn/assest/music.mp3" loop></audio>
+<script src="/game/vocablearn/assest/js/audio-controller.js"></script>
+
+<div id="navbar-container"></div>
+<script src="/game/vocablearn/assest/js/navbar.js"></script>
+</body>
+</html>
